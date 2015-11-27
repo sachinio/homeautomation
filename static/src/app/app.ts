@@ -4,8 +4,8 @@ import GPIO = gpio.GPIO;
 
 let pin = new GPIO(7, gpio.PinType.Input);
 
-pin.value = 'True';
+pin.value = 1;
 
 setTimeout(()=>{
-    pin.value = 'False'
+    pin.value = 0
 },2000);
