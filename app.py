@@ -1,6 +1,5 @@
 from __future__ import print_function
-from subprocess import Popen
-from subprocess import PIPE
+import subprocess
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -13,7 +12,12 @@ def index():
 
 @app.route('/test/', methods=['POST'])
 def poster():
-    return Popen([request.form['cmd'], ""], stdout=PIPE).communicate()[0]
+    cmd = ["sudo",request.form['cmd']]
+    p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
+                         stderr=subprocess.PIPE,
+                         stdin=subprocess.PIPE)
+    out,err = p.communicate()
+    return out
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
