@@ -14,7 +14,7 @@ namespace gpio {
             $.post('/gpio/',{
                 pin: this.pinNumber,
                 value: val
-            })
+            }, d => console.log(d))
         }
     }
 }
