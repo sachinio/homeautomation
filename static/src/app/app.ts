@@ -2,7 +2,7 @@
 
 import GPIO = gpio.GPIO;
 
-let pin = new GPIO(12, gpio.PinType.Input);
+let pin = new GPIO(7, gpio.PinType.Input);
 
 pin.value = 'True';
 
