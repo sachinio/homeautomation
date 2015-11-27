@@ -4,6 +4,7 @@ from flask import render_template
 from flask import request
 
 import subprocess
+from pi.gpio import set_output
 
 app = Flask(__name__)
 
@@ -11,6 +12,12 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/gpio/', methods=['POST'])
+def gpio():
+    print(request.form);
+    set_output(int(request.form['pin']), bool(request.form['value']))
 
 
 @app.route('/cmd/', methods=['POST'])
