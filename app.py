@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request
 from __future__ import print_function
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
