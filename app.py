@@ -10,7 +10,7 @@ def index():
 
 @app.route('/test/', methods=['POST'])
 def poster():
-    print request.form
+    print(request.form)
     return 'Got it'
 
 if __name__ == '__main__':
