@@ -12,7 +12,7 @@ def index():
 
 @app.route('/test/', methods=['POST'])
 def poster():
-    return Popen(["request.form['cmd']", ""], stdout=PIPE).communicate()[0]
+    return Popen([request.form['cmd'], ""], stdout=PIPE).communicate()[0]
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
