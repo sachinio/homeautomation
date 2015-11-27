@@ -1,5 +1,6 @@
 def set_output(pin, value):
     import RPi.GPIO as GPIO
+    GPIO.setmode(GPIO.BOARD)
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, value)
 
