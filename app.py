@@ -1,6 +1,9 @@
 from __future__ import print_function
+from flask import Flask
+from flask import render_template
+from flask import request
+
 import subprocess
-from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -10,13 +13,14 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/test/', methods=['POST'])
+@app.route('/cmd/', methods=['POST'])
 def poster():
-    cmd = ["sudo",request.form['cmd']]
-    p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
+    cmd = request.form['cmd'].split(',')
+    p = subprocess.Popen(cmd,
+                         stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
                          stdin=subprocess.PIPE)
-    out,err = p.communicate()
+    out, err = p.communicate()
     return out
 
 if __name__ == '__main__':
