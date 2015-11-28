@@ -37,7 +37,6 @@ def process_gpio_request(options):
         output(pin, int(options[VALUE]))
         return SUCCESS
     elif action == READ:
-        set_input(pin)
         return read(pin)
     elif action == SET_INPUT:
         set_input(pin)
