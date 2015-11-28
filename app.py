@@ -2,9 +2,11 @@ from __future__ import print_function
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import g
+
+from pi.gpio import process_gpio_request
 
 import subprocess
-from pi.gpio import process_gpio_request
 
 app = Flask(__name__)
 
@@ -30,5 +32,14 @@ def poster():
     out, err = p.communicate()
     return out
 
+
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
+
