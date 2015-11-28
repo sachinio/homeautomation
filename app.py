@@ -27,7 +27,7 @@ def init_db():
 
 @app.route('/gpio', methods=['POST'])
 def gpio():
-    return process_gpio_request(request.form)
+    return str(process_gpio_request(request.form))
 
 
 @app.route('/console', methods=['POST'])

@@ -10,7 +10,7 @@ function toggle() {
 }
 
 function read(){
-    inPin.value().then((d)=>{
+    inPin.value.then((d)=>{
         alert(d)
     })
 }

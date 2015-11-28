@@ -26,7 +26,7 @@ namespace gpio {
             }, d => console.log(d))
         }
 
-        public value(): JQueryDeferred<string>{
+        public get value(): JQueryDeferred<string>{
             let promise = $.Deferred<string>();
             $.post('/gpio',{
                 pin: this.pinNumber,
