@@ -4,8 +4,8 @@ import GPIO = gpio.GPIO;
 
 let pin = new GPIO(7, gpio.PinType.Input);
 
-pin.value = 1;
+let state = 0;
 
-setTimeout(()=>{
-    pin.value = 0
-},2000);
+function toggle() {
+    pin.value = state = state === 0 ? 1 : 0;
+}
