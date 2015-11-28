@@ -1,3 +1,5 @@
+import RPi.GPIO as GPIO
+
 SET_OUTPUT = 'set_output'
 SET_INPUT = 'set_input'
 WRITE = 'write'
@@ -9,13 +11,11 @@ SUCCESS = 'ok'
 
 
 def set_output(pin):
-    import RPi.GPIO as GPIO
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(pin, GPIO.OUT)
 
 
 def set_input(pin):
-    import RPi.GPIO as GPIO
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
