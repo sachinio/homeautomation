@@ -7,7 +7,7 @@ READ = 'read'
 PIN = 'pin'
 ACTION = 'action'
 VALUE = 'value'
-SUCCESS = 'ok'
+SUCCESS = 'ok '
 
 
 def set_output(pin):
@@ -35,13 +35,13 @@ def process_gpio_request(options):
 
     if action == WRITE:
         output(pin, int(options[VALUE]))
-        return SUCCESS
+        return SUCCESS + WRITE
     elif action == READ:
         return read(pin)
     elif action == SET_INPUT:
         set_input(pin)
-        return SUCCESS
+        return SUCCESS + SET_INPUT
     elif action == SET_OUTPUT:
         set_output(pin)
-        return SUCCESS
+        return SUCCESS + SET_OUTPUT
 
