@@ -11,7 +11,7 @@ namespace gpio {
         }
 
         public set value(val){
-            $.post('/gpio',{
+            $.post('/gpio/',{
                 pin: this.pinNumber,
                 value: val
             }, d => console.log(d))

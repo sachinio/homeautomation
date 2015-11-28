@@ -25,13 +25,13 @@ def init_db():
     return 'db initialized'
 
 
-@app.route('/gpio', methods=['POST'])
+@app.route('/gpio/', methods=['POST'])
 def gpio():
     process_gpio_request(request.form)
     return 'ok'
 
 
-@app.route('/cmd', methods=['POST'])
+@app.route('/cmd/', methods=['POST'])
 def poster():
     cmd = request.form['cmd'].split(',')
     p = subprocess.Popen(cmd,
