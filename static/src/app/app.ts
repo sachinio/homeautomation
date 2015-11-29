@@ -14,3 +14,7 @@ function read(){
         alert(d)
     })
 }
+
+function garage(){
+    $.post('/xbee',{addr:'00 13 A2 00 40 BF 8E 93', data:'G,F,1,'});
+}

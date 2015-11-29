@@ -7,8 +7,8 @@ from flask import g
 from pi.gpio import process_gpio_request
 
 import subprocess
-import pi.db
-
+import pi.db as db
+import pi.xbee as xbee
 
 app = Flask(__name__)
 
@@ -18,10 +18,16 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/xbee', methods=['POST'])
+def xbeeSend():
+    xbee.send(request.form['addr'], request.form['data'])
+    return 'xbee ok'
+
+
 @app.route('/db')
 def init_db():
-    pi.db.init_db(app)
-    pi.db.insert('settings', ('name', 'value'), ('light', 'on'))
+    db.init_db(app)
+    db.insert('settings', ('name', 'value'), ('light', 'on'))
     return 'db initialized'
 
 
