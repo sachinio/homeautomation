@@ -1,5 +1,5 @@
-#import RPi.GPIO as GPIO
-import mockGpio as GPIO
+import RPi.GPIO as GPIO
+#import mockGpio as GPIO
 
 SET_OUTPUT = 'set_output'
 SET_INPUT = 'set_input'
