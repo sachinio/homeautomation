@@ -9,6 +9,7 @@ from pi.gpio import process_gpio_request
 import subprocess
 import pi.db as db
 import pi.xbee as xbee
+import pi.servo as servo
 
 app = Flask(__name__)
 
@@ -34,6 +35,11 @@ def init_db():
 @app.route('/gpio', methods=['POST'])
 def gpio():
     return str(process_gpio_request(request.form))
+
+
+@app.route('/servo', methods=['POST'])
+def servo_position():
+    servo.position(request.form['sno'], request.form['angle'], request.form['delay'])
 
 
 @app.route('/console', methods=['POST'])

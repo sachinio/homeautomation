@@ -4,10 +4,10 @@ import serial
 
 def calChecksum(frameData):
     print 'calculating checksum'
-    checksum=0
+    checksum = 0
     for a in frameData:
-        checksum+=int(a,16)
-    return hex(int('0xFF',16)-int(str(hex(checksum))[-2:],16))
+        checksum += int(a, 16)
+    return hex(int('0xFF', 16)-int(str(hex(checksum))[-2:], 16))
 
 
 def createFrame(address, data):
@@ -31,7 +31,7 @@ def createFrame(address, data):
     arr.append(frameDelimiter)
     arr = arr[::-1]
     arr.append(str(checksum).replace('0x', ''))
-    print(arr)
+    #print(arr)
     cmd = ''.join(b for b in arr)
 
     return cmd
@@ -39,7 +39,7 @@ def createFrame(address, data):
 
 def send(address, data):
     frame = createFrame(address, data)
-    print bytearray.fromhex(frame)
+    #print bytearray.fromhex(frame)
     ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, timeout=3.0)
     #ser = serial.Serial('/dev/tty.usbserial-DA00T246', baudrate=9600, timeout=3.0)
     #fcntl.flock(ser.fileno(), fcntl.LOCK_EX)
