@@ -2,7 +2,7 @@ import subprocess
 import os
 
 def position(sno, angle, delay):
-    cmd = 'sudo ./pi/servo {} {} {}'.format(angle, sno, delay)
+    cmd = 'sudo .{}/pi/servo {} {} {}'.format(os.getcwd(),angle, sno, delay)
     print os.getcwd()
     print cmd
     p = subprocess.Popen(cmd,
