@@ -39,7 +39,7 @@ def gpio():
 
 @app.route('/servo', methods=['POST'])
 def servo_position():
-    servo.position(request.form['sno'], request.form['angle'], request.form['delay'])
+    return servo.position(request.form['sno'], request.form['angle'], request.form['delay'])
 
 
 @app.route('/console', methods=['POST'])
