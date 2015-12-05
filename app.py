@@ -4,12 +4,13 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import g
-from pi.gpio import process_gpio_request
 
 import subprocess
 import pi.db as db
-import pi.xbee as xbee
 import pi.servo as servo
+
+import xpibee
+import webpigpio
 
 app = Flask(__name__)
 
@@ -21,7 +22,7 @@ def index():
 
 @app.route('/xbee', methods=['POST'])
 def xbeeSend():
-    xbee.send(request.form['addr'], request.form['data'])
+    xpibee.send_transmit_request(request.form['addr'], request.form['data'])
     return 'xbee ok'
 
 
@@ -34,7 +35,7 @@ def init_db():
 
 @app.route('/gpio', methods=['POST'])
 def gpio():
-    return str(process_gpio_request(request.form))
+    return str(webpigpio.process_gpio_request(request.form))
 
 
 @app.route('/servo', methods=['POST'])
