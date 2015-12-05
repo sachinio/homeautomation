@@ -1,16 +1,14 @@
 from __future__ import print_function
 
+import subprocess
+
+import webpigpio
+import xpibee
 from flask import Flask
 from flask import render_template
 from flask import request
-from flask import g
 
-import subprocess
-import pi.db as db
-import pi.servo as servo
-
-import xpibee
-import webpigpio
+from src import pi as servo
 
 app = Flask(__name__)
 
@@ -24,13 +22,6 @@ def index():
 def xbeeSend():
     xpibee.send_transmit_request(request.form['addr'], request.form['data'])
     return 'xbee ok'
-
-
-@app.route('/db')
-def init_db():
-    db.init_db(app)
-    db.insert('settings', ('name', 'value'), ('light', 'on'))
-    return 'db initialized'
 
 
 @app.route('/gpio', methods=['POST'])
@@ -52,13 +43,6 @@ def console():
                          stdin=subprocess.PIPE)
     out, err = p.communicate()
     return out
-
-
-@app.teardown_appcontext
-def close_connection(exception):
-    db = getattr(g, '_database', None)
-    if db is not None:
-        db.close()
 
 
 if __name__ == '__main__':
