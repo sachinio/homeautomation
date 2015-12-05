@@ -8,8 +8,6 @@ from flask import Flask
 from flask import render_template
 from flask import request
 
-from src import pi as servo
-
 app = Flask(__name__)
 
 
@@ -29,9 +27,9 @@ def gpio():
     return str(webpigpio.process_gpio_request(request.form))
 
 
-@app.route('/servo', methods=['POST'])
-def servo_position():
-    return servo.position(request.form['sno'], request.form['angle'], request.form['delay'])
+#@app.route('/servo', methods=['POST'])
+#def servo_position():
+#    return servo.position(request.form['sno'], request.form['angle'], request.form['delay'])
 
 
 @app.route('/console', methods=['POST'])
