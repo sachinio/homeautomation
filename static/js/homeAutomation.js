@@ -63,5 +63,13 @@ function read() {
     });
 }
 function garage() {
-    $.post('/xbee', { addr: '00 13 A2 00 40 BF 8E 93', data: 'G,F,1,' });
+    $.ajax({
+        type: 'POST',
+        url: '/xbee',
+        data: JSON.stringify({
+            addr: '00 13 A2 00 40 BF 8E 93',
+            data: 'G,F,1,' }),
+        contentType: "application/json",
+        dataType: 'json'
+    });
 }
