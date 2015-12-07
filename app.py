@@ -17,14 +17,14 @@ def index():
 
 
 @app.route('/xbee', methods=['POST'])
-def xbeeSend():
+def xbee_send():
     xpibee.send_transmit_request(request.json['addr'], request.json['data'])
     return 'xbee ok'
 
 
 @app.route('/gpio', methods=['POST'])
 def gpio():
-    return str(webpigpio.process_gpio_request(request.form))
+    return str(webpigpio.process_gpio_request(request.json))
 
 
 #@app.route('/servo', methods=['POST'])
@@ -44,5 +44,5 @@ def console():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0')
 

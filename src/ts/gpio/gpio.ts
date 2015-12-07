@@ -1,39 +1,47 @@
 /// <reference path="../../typedefs/jquery.d.ts" />
 
 namespace gpio {
+    function sendCommand(data){
+        $.ajax({
+            type: 'POST',
+            url: '/gpio',
+            data: JSON.stringify (data),
+            contentType: "application/json",
+            success: (d)=> console.log(d),
+            dataType: 'json'
+        });
+    }
+
     export class Output{
         constructor(private pinNumber: number){
-            $.post('/gpio',{
+            sendCommand({
                 pin: this.pinNumber,
                 action: 'set_output'
-            }, d => console.log(d))
+            });
         }
 
         public set value(val){
-            $.post('/gpio',{
+            sendCommand({
                 pin: this.pinNumber,
                 value: val,
                 action: 'write'
-            }, d => console.log(d))
+            });
         }
     }
 
     export class Input{
         constructor(private pinNumber: number){
-            $.post('/gpio',{
+            sendCommand({
                 pin: this.pinNumber,
                 action: 'set_input'
-            }, d => console.log(d))
+            });
         }
 
         public get value(): JQueryDeferred<string>{
             let promise = $.Deferred<string>();
-            $.post('/gpio',{
+            sendCommand({
                 pin: this.pinNumber,
                 action: 'read'
-            }, d => {
-                console.log(d)
-                promise.resolve(d);
             });
 
             return promise;

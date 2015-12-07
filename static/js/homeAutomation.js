@@ -1,21 +1,31 @@
 /// <reference path="../../typedefs/jquery.d.ts" />
 var gpio;
 (function (gpio) {
+    function sendCommand(data) {
+        $.ajax({
+            type: 'POST',
+            url: '/gpio',
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function (d) { return console.log(d); },
+            dataType: 'json'
+        });
+    }
     var Output = (function () {
         function Output(pinNumber) {
             this.pinNumber = pinNumber;
-            $.post('/gpio', {
+            sendCommand({
                 pin: this.pinNumber,
                 action: 'set_output'
-            }, function (d) { return console.log(d); });
+            });
         }
         Object.defineProperty(Output.prototype, "value", {
             set: function (val) {
-                $.post('/gpio', {
+                sendCommand({
                     pin: this.pinNumber,
                     value: val,
                     action: 'write'
-                }, function (d) { return console.log(d); });
+                });
             },
             enumerable: true,
             configurable: true
@@ -26,20 +36,17 @@ var gpio;
     var Input = (function () {
         function Input(pinNumber) {
             this.pinNumber = pinNumber;
-            $.post('/gpio', {
+            sendCommand({
                 pin: this.pinNumber,
                 action: 'set_input'
-            }, function (d) { return console.log(d); });
+            });
         }
         Object.defineProperty(Input.prototype, "value", {
             get: function () {
                 var promise = $.Deferred();
-                $.post('/gpio', {
+                sendCommand({
                     pin: this.pinNumber,
                     action: 'read'
-                }, function (d) {
-                    console.log(d);
-                    promise.resolve(d);
                 });
                 return promise;
             },
