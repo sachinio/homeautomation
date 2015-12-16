@@ -1,15 +1,18 @@
 from __future__ import print_function
 
 import subprocess
-
+import sys
 import webpigpio
 import xpibee
+
 from flask import Flask
 from flask import render_template
 from flask import request
 
 app = Flask(__name__)
-
+debug = False
+if len(sys.argv) > 1:
+    debug = bool(sys.argv[1])
 
 @app.route('/')
 def index():
@@ -44,5 +47,5 @@ def console():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', debug=debug)
 
