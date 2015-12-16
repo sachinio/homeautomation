@@ -18,7 +18,7 @@ def index():
 
 @app.route('/xbee', methods=['POST'])
 def xbee_send():
-    xpibee.send_transmit_request_2(request.json['data'], request.json['addr'])
+    xpibee.send_transmit_request_2(request.json['data'], hex(int(request.json['addr'],16)))
     #xpibee.send_transmit_request(request.json['addr'], request.json['data'])
     return 'xbee ok'
 
