@@ -12,7 +12,8 @@ from flask import request
 app = Flask(__name__)
 debug = False
 if len(sys.argv) > 1:
-    debug = bool(sys.argv[1])
+    debug = sys.argv[1] == 'True'
+
 
 @app.route('/')
 def index():
