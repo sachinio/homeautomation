@@ -69,14 +69,21 @@ function read() {
         alert(d);
     });
 }
-function garage() {
-    $.ajax({
+function sendPost(url, data) {
+    return $.ajax({
         type: 'POST',
-        url: '/xbee',
-        data: JSON.stringify({
-            addr: '00 13 A2 00 40 BF 8E 93',
-            data: 'G,F,1,' }),
+        url: url,
+        data: JSON.stringify(data),
         contentType: "application/json",
         dataType: 'json'
     });
+}
+function garage() {
+    return sendPost('/xbee', {
+        addr: '0x0013A20040BF8E93',
+        //addr:'00 13 A2 00 40 BF 8E 93',
+        data: 'G,F,1,' });
+}
+function reboot() {
+    return sendPost('/console', { 'console': 'sudo,reboot,' });
 }
