@@ -35,3 +35,9 @@ function reboot(){
     return sendPost('/console',{ 'console':'sudo,reboot,' })
 }
 
+function laser(){
+    return sendPost('/xbee',{
+        addr:'00 13 A2 00 40 BF 8A CB',
+        data:'D,40,50,255,100,0,0'});
+}
+
