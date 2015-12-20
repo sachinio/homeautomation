@@ -42,7 +42,7 @@ function laser() {
     lState = !lState;
     return sendPost('/xbee', {
         addr: '00 13 A2 00 40 BF 8A C8',
-        data: lState ? 'R' : 'O' + ',40,50,255,100,0,0'
+        data: (lState ? 'R' : 'O') + ',40,50,255,100,0,0'
     });
 }
 
