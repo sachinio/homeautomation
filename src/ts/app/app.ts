@@ -9,35 +9,40 @@ function toggle() {
     outPin.value = state = state === 0 ? 1 : 0;
 }
 
-function read(){
-    inPin.value.then((d)=>{
+function read() {
+    inPin.value.then((d)=> {
         alert(d)
     })
 }
 
-function sendPost(url, data){
+function sendPost(url, data) {
     return $.ajax({
         type: 'POST',
         url: url,
-        data: JSON.stringify (data),
+        data: JSON.stringify(data),
         contentType: "application/json",
         dataType: 'json'
     });
 }
 
-function garage(){
-    return sendPost('/xbee',{
-        addr:'00 13 A2 00 40 BF 8E 93',
-        data:'G,F,1,'});
+function garage() {
+    return sendPost('/xbee', {
+        addr: '00 13 A2 00 40 BF 8E 93',
+        data: 'G,F,1,'
+    });
 }
 
-function reboot(){
-    return sendPost('/console',{ 'console':'sudo,reboot,' })
+function reboot() {
+    return sendPost('/console', {'console': 'sudo,reboot,'})
 }
 
-function laser(){
-    return sendPost('/xbee',{
-        addr:'00 13 A2 00 40 BF 8A CB',
-        data:'D,40,50,255,100,0,0'});
+var lState = false;
+
+function laser() {
+    lState = !lState;
+    return sendPost('/xbee', {
+        addr: '00 13 A2 00 40 BF 8A C8',
+        data: lState ? 'R' : 'O' + ',40,50,255,100,0,0'
+    });
 }
 

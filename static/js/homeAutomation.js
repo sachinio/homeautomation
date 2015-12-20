@@ -81,13 +81,17 @@ function sendPost(url, data) {
 function garage() {
     return sendPost('/xbee', {
         addr: '00 13 A2 00 40 BF 8E 93',
-        data: 'G,F,1,' });
+        data: 'G,F,1,'
+    });
 }
 function reboot() {
     return sendPost('/console', { 'console': 'sudo,reboot,' });
 }
+var lState = false;
 function laser() {
+    lState = !lState;
     return sendPost('/xbee', {
-        addr: '00 13 A2 00 40 BF 8A CB',
-        data: 'D,40,50,255,100,0,0' });
+        addr: '00 13 A2 00 40 BF 8A C8',
+        data: lState ? 'R' : 'O' + ',40,50,255,100,0,0'
+    });
 }
