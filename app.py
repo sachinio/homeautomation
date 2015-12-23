@@ -44,7 +44,7 @@ def console():
     p = subprocess.Popen(cmd,
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
-                         stdin=subprocess.PIPE,shell=True)
+                         stdin=subprocess.PIPE)
     out, err = p.communicate()
     print('done')
     print(out)
