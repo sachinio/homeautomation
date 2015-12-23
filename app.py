@@ -45,13 +45,12 @@ def console():
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
                          stdin=subprocess.PIPE)
-    #out, err = p.communicate()
-    #print('done')
-    #print(out)
-    #print(err)
-    #return 'out: '+out + ' err: '+err;
-    print("ok")
-    return "ok";
+
+    if 'async' not in request.json.keys() or request.json['async'] == 'False':
+            out, err = p.communicate()
+            return 'out: ' + out + '\nerr: '+err
+
+    return "started command async"
 
 
 if __name__ == '__main__':
