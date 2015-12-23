@@ -47,9 +47,11 @@ def console():
                          stdin=subprocess.PIPE)
 
     if 'async' not in request.json.keys() or request.json['async'] == 'False':
+            print('Running in sync')
             out, err = p.communicate()
             return 'out: ' + out + '\nerr: '+err
 
+    print('Running Async')
     return "started command async"
 
 
