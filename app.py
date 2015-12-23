@@ -44,7 +44,7 @@ def console():
                          stderr=subprocess.PIPE,
                          stdin=subprocess.PIPE)
     out, err = p.communicate()
-    return out
+    return 'out: ' + out
 
 
 if __name__ == '__main__':
