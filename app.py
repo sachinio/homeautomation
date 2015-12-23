@@ -43,8 +43,8 @@ def console():
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
                          stdin=subprocess.PIPE)
-    out, err = p.communicate()
-    return 'out: ' + out
+    #out, err = p.communicate()
+    return 'done'
 
 
 if __name__ == '__main__':
