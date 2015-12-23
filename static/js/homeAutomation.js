@@ -69,13 +69,14 @@ function read() {
         alert(d);
     });
 }
-function sendPost(url, data) {
+function sendPost(url, data, success) {
     return $.ajax({
         type: 'POST',
         url: url,
         data: JSON.stringify(data),
         contentType: "application/json",
-        dataType: 'json'
+        dataType: 'json',
+        success: success
     });
 }
 function garage() {
