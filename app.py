@@ -39,11 +39,13 @@ def gpio():
 @app.route('/console', methods=['POST'])
 def console():
     cmd = request.json['console'].split(',')
+    print(cmd)
     p = subprocess.Popen(cmd,
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
                          stdin=subprocess.PIPE,shell=True)
     out, err = p.communicate()
+    print('done')
     print(out)
     print(err)
     return 'out: '+out + ' err: '+err;
