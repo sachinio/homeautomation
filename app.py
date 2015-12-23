@@ -42,9 +42,11 @@ def console():
     p = subprocess.Popen(cmd,
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
-                         stdin=subprocess.PIPE)
-    #out, err = p.communicate()
-    return 'done'
+                         stdin=subprocess.PIPE,shell=True)
+    out, err = p.communicate()
+    print(out)
+    print(err)
+    return 'out: '+out + ' err: '+err;
 
 
 if __name__ == '__main__':
