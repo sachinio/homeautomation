@@ -45,11 +45,13 @@ def console():
                          stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE,
                          stdin=subprocess.PIPE)
-    out, err = p.communicate()
-    print('done')
-    print(out)
-    print(err)
-    return 'out: '+out + ' err: '+err;
+    #out, err = p.communicate()
+    #print('done')
+    #print(out)
+    #print(err)
+    #return 'out: '+out + ' err: '+err;
+    print("ok")
+    return "ok";
 
 
 if __name__ == '__main__':
