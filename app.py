@@ -24,19 +24,20 @@ def index():
 @app.route('/xbee', methods=['POST'])
 def xbee_send():
     xpibee.send_transmit_request(request.json['addr'], request.json['data'])
-    return 'xbee ok'
+    d = {'result': 'ok'}
+    return jsonify(**d)
 
 
 @app.route('/xbee2', methods=['POST'])
 def xbee2_send():
-
-    d = {'result': xpibee.send_transmit_request(request.json['addr'], request.json['data'], True)[2] + '}'}
+    d = {'result': xpibee.send_transmit_request(request.json['addr'], request.json['data'], True)[2]}
     return jsonify(**d)
 
 
 @app.route('/gpio', methods=['POST'])
 def gpio():
-    return str(webpigpio.process_gpio_request(request.json))
+    d = {'result': str(webpigpio.process_gpio_request(request.json))}
+    return jsonify(**d)
 
 
 #@app.route('/servo', methods=['POST'])
