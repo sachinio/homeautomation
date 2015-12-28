@@ -26,6 +26,11 @@ def xbee_send():
     return 'xbee ok'
 
 
+@app.route('/xbee2', methods=['POST'])
+def xbee2_send():
+    return xpibee.send_transmit_request(request.json['addr'], request.json['data'], True)[2]
+
+
 @app.route('/gpio', methods=['POST'])
 def gpio():
     return str(webpigpio.process_gpio_request(request.json))
