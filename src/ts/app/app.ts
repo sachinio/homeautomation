@@ -29,7 +29,7 @@ function sendPost(url, data, success?) {
 function garage() {
     return sendPost('/xbee', {
         addr: '00 13 A2 00 40 BF 8E 93',
-        data: 'G,F,1,'
+        data: 'G,F,500,'
     });
 }
 
