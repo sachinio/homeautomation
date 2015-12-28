@@ -8,6 +8,7 @@ import xpibee
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import jsonify
 
 app = Flask(__name__)
 debug = False
@@ -28,7 +29,9 @@ def xbee_send():
 
 @app.route('/xbee2', methods=['POST'])
 def xbee2_send():
-    return xpibee.send_transmit_request(request.json['addr'], request.json['data'], True)[2]
+
+    d = {'result': xpibee.send_transmit_request(request.json['addr'], request.json['data'], True)[2] + '}'}
+    return jsonify(**d)
 
 
 @app.route('/gpio', methods=['POST'])
