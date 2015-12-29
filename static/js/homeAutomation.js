@@ -104,7 +104,7 @@ function checkState() {
     }).then(function (d) {
         if (d.result !== 'timeout') {
             var val = parseInt(d.result);
-            if (val > 100) {
+            if (val < 100) {
                 $('.garage').css('color', '#00FF5A');
             }
             else {
