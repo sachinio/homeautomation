@@ -60,7 +60,7 @@ function checkState(){
                 $('.garage').css('color', '#FE4365')
             }
         }
-        setTimeout(()=>checkState(),2000);
+        setTimeout(()=>checkState(),5000);
     })
 }
 

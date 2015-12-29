@@ -110,7 +110,7 @@ function checkState() {
                 $('.garage').css('color', '#FE4365');
             }
         }
-        setTimeout(function () { return checkState(); }, 2000);
+        setTimeout(function () { return checkState(); }, 5000);
     });
 }
 checkState();
