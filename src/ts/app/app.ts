@@ -47,3 +47,23 @@ function laser() {
     });
 }
 
+function checkState(){
+//#00FF5A
+    sendPost('/xbee2', {
+        addr: '00 13 A2 00 40 BF 8E 93',
+        data: 'D,F,500,'
+    }).then(d=>{
+        if(d.result !== 'timeout') {
+            var val = parseInt(d.result);
+            if (val > 100) {
+                $('.garage').css('color', '#00FF5A')
+            } else {
+                $('.garage').css('color', 'red')
+            }
+        }
+        setTimeout(()=>checkState(),2000);
+    })
+}
+
+checkState();
+

@@ -96,3 +96,22 @@ function laser() {
         data: (lState ? 'R' : 'O') + ',40,50,255,100,0,0'
     });
 }
+function checkState() {
+    //#00FF5A
+    sendPost('/xbee2', {
+        addr: '00 13 A2 00 40 BF 8E 93',
+        data: 'D,F,500,'
+    }).then(function (d) {
+        if (d.result !== 'timeout') {
+            var val = parseInt(d.result);
+            if (val > 100) {
+                $('.garage').css('color', '#00FF5A');
+            }
+            else {
+                $('.garage').css('color', 'red');
+            }
+        }
+        setTimeout(function () { return checkState(); }, 2000);
+    });
+}
+checkState();
