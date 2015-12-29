@@ -48,7 +48,6 @@ function laser() {
 }
 
 function checkState(){
-//#00FF5A
     sendPost('/xbee2', {
         addr: '00 13 A2 00 40 BF 8E 93',
         data: 'D,F,500,'
@@ -58,7 +57,7 @@ function checkState(){
             if (val < 100) {
                 $('.garage').css('color', '#00FF5A')
             } else {
-                $('.garage').css('color', 'red')
+                $('.garage').css('color', '#FE4365')
             }
         }
         setTimeout(()=>checkState(),2000);
