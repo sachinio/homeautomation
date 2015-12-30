@@ -12,6 +12,8 @@ from flask import jsonify
 
 app = Flask(__name__)
 debug = False
+tokens = {}
+
 if len(sys.argv) > 1:
     debug = sys.argv[1] == 'True'
 
@@ -20,6 +22,11 @@ if len(sys.argv) > 1:
 def index():
     return render_template('garage.html')
 
+
+@app.route('/register', methods=['POST'])
+def register():
+    tokens[request.json['token']] = True
+    print(tokens.keys())
 
 @app.route('/xbee', methods=['POST'])
 def xbee_send():
