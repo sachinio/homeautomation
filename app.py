@@ -1,5 +1,7 @@
 from __future__ import print_function
 
+import json
+import urllib2
 import subprocess
 import sys
 import webpigpio
@@ -10,12 +12,19 @@ from flask import render_template
 from flask import request
 from flask import jsonify
 
+from pymongo import MongoClient
+client = MongoClient()
+db = client.home
+
 app = Flask(__name__)
 debug = False
 tokens = {}
 
 if len(sys.argv) > 1:
     debug = sys.argv[1] == 'True'
+
+if len(sys.argv) > 2:
+    db.android.insert_one({'key', sys.argv[2]})
 
 
 @app.route('/')
@@ -27,6 +36,30 @@ def index():
 def register():
     tokens[request.json['token']] = True
     print(tokens.keys())
+    d = {'result': 'ok'}
+    return jsonify(**d)
+
+
+@app.route('/notify', methods=['POST'])
+def notify():
+    title = request.json['title']
+    text = request.json['text']
+    cursor = db.android.find()
+    print(cursor[0])
+    key = cursor[0]['key']
+    print(key)
+
+    d = {'result': 'ok'}
+    return jsonify(**d)
+
+    for t in tokens:
+        data = {"notification": { "title": title, "text": text}, "to": t}
+
+        req = urllib2.Request('https://gcm-http.googleapis.com/gcm/send')
+        req.add_header('Content-Type', 'application/json')
+        req.add_header('Authorization', key)
+        urllib2.urlopen(req, json.dumps(data))
+
     d = {'result': 'ok'}
     return jsonify(**d)
 
