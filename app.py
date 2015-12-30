@@ -27,6 +27,9 @@ def index():
 def register():
     tokens[request.json['token']] = True
     print(tokens.keys())
+    d = {'result': 'ok'}
+    return jsonify(**d)
+
 
 @app.route('/xbee', methods=['POST'])
 def xbee_send():
