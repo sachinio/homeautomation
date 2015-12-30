@@ -7,5 +7,5 @@ with picamera.PiCamera() as camera:
     # Camera warm-up time
     time.sleep(2)
     while True:
-        camera.capture('/var/www/ram/picam.jpg', resize=(320, 240))
+        camera.capture('../../static/ram/picam.jpg', resize=(320, 240))
         time.sleep(1)
