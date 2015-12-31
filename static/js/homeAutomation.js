@@ -123,4 +123,4 @@ function sendNote(title, msg, success) {
         success: success
     });
 }
-//checkState();
+checkState();
