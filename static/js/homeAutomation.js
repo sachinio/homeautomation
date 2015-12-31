@@ -113,4 +113,14 @@ function checkState() {
         setTimeout(function () { return checkState(); }, 5000);
     });
 }
-checkState();
+function sendNote(title, msg, success) {
+    $.ajax({
+        type: 'POST',
+        url: "/notify",
+        data: JSON.stringify({ "title": title, "text": msg }),
+        contentType: "application/json",
+        dataType: 'json',
+        success: success
+    });
+}
+//checkState();
