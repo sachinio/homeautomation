@@ -18,7 +18,6 @@ db = client.home
 
 app = Flask(__name__)
 debug = False
-tokens = {}
 
 if len(sys.argv) > 1:
     debug = sys.argv[1] == 'True'
@@ -34,8 +33,7 @@ def index():
 
 @app.route('/register', methods=['POST'])
 def register():
-    tokens[request.json['token']] = True
-    print(tokens.keys())
+    db.gcmtokens.update({'token': request.json['token']},{'token': request.json['token']}, upsert=True)
     d = {'result': 'ok'}
     return jsonify(**d)
 
@@ -56,8 +54,8 @@ def notify():
         d = {'result': 'not ok'}
         return jsonify(**d)
 
-    for t in tokens.keys():
-        data = {"notification": { "title": title, "text": text}, "to": t}
+    for t in db.gcmtokens.find():
+        data = {"notification": { "title": title, "text": text}, "to": t['token']}
         print(data)
 
         req = urllib2.Request('https://gcm-http.googleapis.com/gcm/send')
