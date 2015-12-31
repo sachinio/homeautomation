@@ -44,16 +44,21 @@ def register():
 def notify():
     title = request.json['title']
     text = request.json['text']
-    cursor = db.android.find()
-    print(cursor[0])
-    key = cursor[0]['key']
-    print(key)
 
-    d = {'result': 'ok'}
-    return jsonify(**d)
+    c = db.android.find()
+    key = None
+    for d in c:
+        if 'auth' in d.keys():
+            key = d['auth']
 
-    for t in tokens:
+    if key is None:
+        print("Invalid Key")
+        d = {'result': 'not ok'}
+        return jsonify(**d)
+
+    for t in tokens.keys():
         data = {"notification": { "title": title, "text": text}, "to": t}
+        print(data)
 
         req = urllib2.Request('https://gcm-http.googleapis.com/gcm/send')
         req.add_header('Content-Type', 'application/json')
