@@ -71,7 +71,7 @@ def notify():
 def device():
     id = request.json['id']
     if id == '1':
-        cmd = ",40,50,255,100,0,0"
+        cmd = ",40,50,255,100,0,0,"
         data = request.json['data']
         if data == '1':
             cmd = 'R' + cmd
