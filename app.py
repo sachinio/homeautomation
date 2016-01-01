@@ -71,12 +71,12 @@ def notify():
 def device():
     idx = request.json['id']
     if idx == '1':
-        cmd = ",40,50,255,100,0,0,"
+        cmd = None
         data = request.json['data']
         if data == '1':
-            cmd = 'R' + cmd
+            cmd = 'R,40,50,255,100,0,0'
         elif data == '0':
-            cmd = 'O' + cmd
+            cmd = 'O,40,50,255,100,0,0'
         xpibee.send_transmit_request("00 13 A2 00 40 BF 8A C8", cmd)
         d = {'result': 'Laser ' + cmd}
     elif idx == '2':
