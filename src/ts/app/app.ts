@@ -75,5 +75,5 @@ function sendNote(title, msg, success){
     });
 }
 
-//checkState();
+checkState();
 

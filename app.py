@@ -67,6 +67,31 @@ def notify():
     return jsonify(**d)
 
 
+@app.route('/device', methods=['POST'])
+def device():
+    id = request.json['id']
+    if id == '1':
+        cmd = ",40,50,255,100,0,0"
+        data = request.json['data']
+        if data == '1':
+            cmd = 'R' + cmd
+        elif data == '0':
+            cmd = 'O' + cmd
+        xpibee.send_transmit_request("00 13 A2 00 40 BF 8A C8", cmd)
+        d = {'result': 'Laser ' + cmd}
+    elif id == '2':
+        cmd = 'G,F,500,'
+        xpibee.send_transmit_request("00 13 A2 00 40 BF 8E 93", cmd)
+        d = {'result': 'Garage'}
+    elif id == '3':
+        cmd = 'D,F,500,'
+        d = {'result': xpibee.send_transmit_request("00 13 A2 00 40 BF 8E 93", cmd, True)[2]}
+    elif id == '4':
+        cmd = 'T,'
+        d = {'result': xpibee.send_transmit_request("00 13 A2 00 40 BF 8E 7B", cmd, True)[2]}
+    return jsonify(**d)
+
+
 @app.route('/xbee', methods=['POST'])
 def xbee_send():
     xpibee.send_transmit_request(request.json['addr'], request.json['data'])
