@@ -10,7 +10,7 @@ while True:
         req = urllib2.Request('http://10.0.0.19:5000/device')
         req.add_header('Content-Type', 'application/json')
         response = json.load(urllib2.urlopen(req, json.dumps({'id': '3'})))
-        if int(response['result']) > 100:
+        if int(response['result']) < 100:
             print 'Oh oh door open ...'
             count += 1
             if count > 1:
@@ -27,4 +27,4 @@ while True:
         print "Unexpected error:", sys.exc_info()[0]
         pass
 
-    time.sleep(30)
+    time.sleep(300)
