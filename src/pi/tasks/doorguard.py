@@ -10,7 +10,7 @@ while True:
     response = json.load(urllib2.urlopen(req, json.dumps({'id': '3'})))
 
     try:
-        if int(response['result']) < 100:
+        if int(response['result']) > 100:
             count += 1
             if count > 1:
                 data = {'title': 'Home', 'text': 'Someone left the garage door open :|'}
@@ -23,4 +23,4 @@ while True:
     except:
         pass
 
-    time.sleep(300)
+    time.sleep(30)
