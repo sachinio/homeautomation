@@ -69,8 +69,8 @@ def notify():
 
 @app.route('/device', methods=['POST'])
 def device():
-    id = request.json['id']
-    if id == '1':
+    idx = request.json['id']
+    if idx == '1':
         cmd = ",40,50,255,100,0,0,"
         data = request.json['data']
         if data == '1':
@@ -79,14 +79,14 @@ def device():
             cmd = 'O' + cmd
         xpibee.send_transmit_request("00 13 A2 00 40 BF 8A C8", cmd)
         d = {'result': 'Laser ' + cmd}
-    elif id == '2':
+    elif idx == '2':
         cmd = 'G,F,500,'
         xpibee.send_transmit_request("00 13 A2 00 40 BF 8E 93", cmd)
         d = {'result': 'Garage'}
-    elif id == '3':
+    elif idx == '3':
         cmd = 'D,F,500,'
         d = {'result': xpibee.send_transmit_request("00 13 A2 00 40 BF 8E 93", cmd, True)[2]}
-    elif id == '4':
+    elif idx == '4':
         cmd = 'T,'
         d = {'result': xpibee.send_transmit_request("00 13 A2 00 40 BF 8E 7B", cmd, True)[2]}
     return jsonify(**d)
