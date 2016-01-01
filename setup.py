@@ -5,7 +5,7 @@
 import subprocess
 
 apt_packages = ['git', 'python-pip', 'mongodb']
-pip_packages = ['flask', 'Flask-PyMongo', 'xpibee', 'webpigpio']
+pip_packages = ['flask', 'pymongo', 'xpibee', 'webpigpio']
 
 
 def run_process(cmd):
@@ -21,7 +21,7 @@ def install_apt_packages():
 
 def install_pip_packages():
     for pack in pip_packages:
-        cmd = ['sudo', 'pip', 'install', pack , '--upgrade']
+        cmd = ['sudo', 'pip', 'install', pack, '--upgrade']
         run_process(cmd)
 
 run_process(['sudo', 'apt-get', 'update'])
