@@ -12,9 +12,7 @@ while True:
     try:
         if int(response['result']) < 100:
             count += 1
-            print 'Oh oh.. door open'
             if count > 1:
-                print 'Sending message ... '
                 data = {'title': 'Home', 'text': 'Someone left the garage door open :|'}
                 req = urllib2.Request('http://10.0.0.19:5000/notify')
                 req.add_header('Content-Type', 'application/json')
