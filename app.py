@@ -6,11 +6,13 @@ import subprocess
 import sys
 import webpigpio
 import xpibee
+import picamera
 
 from flask import Flask
 from flask import render_template
 from flask import request
 from flask import jsonify
+from flask import send_file
 
 from pymongo import MongoClient
 client = MongoClient()
@@ -18,6 +20,11 @@ db = client.home
 
 app = Flask(__name__)
 debug = False
+
+camera = picamera.PiCamera()
+camera.resolution = (320,240)
+camera.rotation = 180
+camera.start_preview()
 
 if len(sys.argv) > 1:
     debug = sys.argv[1] == 'True'
@@ -65,6 +72,13 @@ def notify():
 
     d = {'result': 'ok'}
     return jsonify(**d)
+
+
+@app.route('/camera')
+def camera():
+    filename = '/var/www/ram/campi.jpg'
+    camera.capture(filename)
+    return send_file(filename, mimetype='image/jpeg')
 
 
 @app.route('/device', methods=['POST'])
