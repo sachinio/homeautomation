@@ -7,15 +7,19 @@ import sys
 import webpigpio
 import xpibee
 import picamera
+import time
+
+import datetime as dt
 
 from flask import Flask
 from flask import render_template
 from flask import request
 from flask import jsonify
 from flask import send_file
-import datetime as dt
-
 from pymongo import MongoClient
+
+lastTime = 0
+
 client = MongoClient()
 db = client.home
 
@@ -32,6 +36,10 @@ if len(sys.argv) > 1:
 
 if len(sys.argv) > 2:
     db.android.insert_one({'key', sys.argv[2]})
+
+
+def millis():
+    return int(round(time.time() * 1000))
 
 
 @app.route('/')
@@ -78,8 +86,14 @@ def notify():
 @app.route('/camera')
 def camera():
     filename = '/var/www/ram/campi.jpg'
-    cam.annotate_text = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    cam.capture(filename, resize = (512,288))
+
+    if (millis() - lastTime) > 1000:
+        cam.annotate_text = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        cam.capture(filename, resize=(512, 288))
+        lastTime = millis()
+    else:
+        print('returning old image')
+
     return send_file(filename, mimetype='image/jpeg')
 
 
