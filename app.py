@@ -13,6 +13,7 @@ from flask import render_template
 from flask import request
 from flask import jsonify
 from flask import send_file
+import datetime as dt
 
 from pymongo import MongoClient
 client = MongoClient()
@@ -77,6 +78,7 @@ def notify():
 @app.route('/camera')
 def camera():
     filename = '/var/www/ram/campi.jpg'
+    cam.annotate_text = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     cam.capture(filename)
     return send_file(filename, mimetype='image/jpeg')
 
