@@ -87,7 +87,9 @@ def notify():
 def camera():
     filename = '/var/www/ram/campi.jpg'
 
-    if (millis() - lastTime) > 1000:
+    global lastTime
+
+    if millis() - lastTime > 1000:
         cam.annotate_text = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         cam.capture(filename, resize=(512, 288))
         lastTime = millis()
