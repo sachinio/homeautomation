@@ -21,10 +21,10 @@ db = client.home
 app = Flask(__name__)
 debug = False
 
-camera = picamera.PiCamera()
-camera.resolution = (320,240)
-camera.rotation = 180
-camera.start_preview()
+cam = picamera.PiCamera()
+cam.resolution = (512,288)
+cam.rotation = 90
+cam.start_preview()
 
 if len(sys.argv) > 1:
     debug = sys.argv[1] == 'True'
@@ -77,7 +77,7 @@ def notify():
 @app.route('/camera')
 def camera():
     filename = '/var/www/ram/campi.jpg'
-    camera.capture(filename)
+    cam.capture(filename)
     return send_file(filename, mimetype='image/jpeg')
 
 
