@@ -23,7 +23,7 @@ app = Flask(__name__)
 debug = False
 
 cam = picamera.PiCamera()
-cam.resolution = (512,288)
+cam.resolution = (1024,768)
 cam.rotation = 90
 cam.start_preview()
 
@@ -79,7 +79,7 @@ def notify():
 def camera():
     filename = '/var/www/ram/campi.jpg'
     cam.annotate_text = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    cam.capture(filename)
+    cam.capture(filename, resize = (512,288))
     return send_file(filename, mimetype='image/jpeg')
 
 
