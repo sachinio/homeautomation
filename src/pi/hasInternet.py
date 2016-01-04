@@ -2,9 +2,6 @@ import httplib
 import time
 import subprocess
 
-count = 0
-
-
 def internet():
     conn = httplib.HTTPConnection("www.google.com")
     try:
@@ -17,12 +14,9 @@ def internet():
 while True:
     try:
         if not internet():
-            if count > 0:
+            time.sleep(60)
+            if not internet():
                 subprocess.Popen(['sudo', 'reboot'])
-            else:
-                count += 1
-        else:
-            count = 0
     except:
         pass
     time.sleep(900)
