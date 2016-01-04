@@ -17,7 +17,7 @@ def internet():
 while True:
     try:
         if not internet():
-            if count > 1:
+            if count > 0:
                 subprocess.Popen(['sudo', 'reboot'])
             else:
                 count += 1
