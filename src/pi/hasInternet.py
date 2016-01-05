@@ -2,6 +2,7 @@ import httplib
 import time
 import subprocess
 
+
 def internet():
     conn = httplib.HTTPConnection("www.google.com")
     try:

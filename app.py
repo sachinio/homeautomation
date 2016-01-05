@@ -8,6 +8,7 @@ import webpigpio
 import xpibee
 import picamera
 import time
+import serial
 
 import datetime as dt
 
@@ -40,6 +41,17 @@ if len(sys.argv) > 2:
 
 def millis():
     return int(round(time.time() * 1000))
+
+
+def xbee(id, cmd, sync=False):
+    ser = serial.Serial(port='/dev/ttyAMA0',baudrate=9600, timeout=3)
+    ser.write(id+'-'+cmd+'-')
+
+    if sync:
+        result = ser.readline()
+        ser.close()
+        return result
+    ser.close()
 
 
 @app.route('/')
@@ -109,18 +121,18 @@ def device():
             cmd = 'R,40,50,255,100,0,0'
         elif data == '0':
             cmd = 'O,40,50,255,100,0,0'
-        xpibee.send_transmit_request("00 13 A2 00 40 BF 8A C8", cmd)
+        xbee(idx, cmd)
         d = {'result': 'Laser ' + cmd}
     elif idx == '2':
         cmd = 'G,F,500,'
-        xpibee.send_transmit_request("00 13 A2 00 40 BF 8E 93", cmd)
+        xpibee(idx, cmd)
         d = {'result': 'Garage'}
     elif idx == '3':
         cmd = 'D,F,500,'
-        d = {'result': xpibee.send_transmit_request("00 13 A2 00 40 BF 8E 93", cmd, True)[2]}
+        d = {'result': xbee(idx, cmd, True)}
     elif idx == '4':
         cmd = 'T,'
-        d = {'result': xpibee.send_transmit_request("00 13 A2 00 40 BF 8E 7B", cmd, True)[2]}
+        d = {'result': xbee(idx, cmd, True)}
     return jsonify(**d)
 
 
