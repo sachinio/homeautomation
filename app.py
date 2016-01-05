@@ -43,12 +43,19 @@ def millis():
     return int(round(time.time() * 1000))
 
 
+def chomp(x):
+    if x.endswith("\r\n"): return x[:-2]
+    if x.endswith("\n"): return x[:-1]
+    return x[:]
+
+
 def xbee(id, cmd, sync=False):
     ser = serial.Serial(port='/dev/ttyAMA0',baudrate=9600, timeout=3)
     ser.write(id+'-'+cmd+'-')
 
     if sync:
-        result = ser.readline()
+        result = chomp(ser.readline())
+        print(result)
         ser.close()
         return result
     ser.close()
@@ -125,7 +132,7 @@ def device():
         d = {'result': 'Laser ' + cmd}
     elif idx == '2':
         cmd = 'G,F,500,'
-        xpibee(idx, cmd)
+        xbee(idx, cmd)
         d = {'result': 'Garage'}
     elif idx == '3':
         cmd = 'D,F,500,'
