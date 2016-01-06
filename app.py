@@ -5,10 +5,11 @@ import urllib2
 import subprocess
 import sys
 import webpigpio
-import xpibee
 import picamera
 import time
 import serial
+import socket
+import requests
 
 import datetime as dt
 
@@ -49,9 +50,17 @@ def chomp(x):
     return x[:]
 
 
-def xbee(id, cmd, sync=False):
+def get_my_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("gmail.com", 80))
+    ip = s.getsockname()[0]
+    s.close()
+    return ip
+
+
+def xbee(idx, cmd, sync=False):
     ser = serial.Serial(port='/dev/ttyAMA0',baudrate=9600, timeout=3)
-    ser.write(id+'-'+cmd+'-')
+    ser.write(idx+'-'+cmd+'-')
 
     if sync:
         result = chomp(ser.readline())
@@ -102,8 +111,23 @@ def notify():
     return jsonify(**d)
 
 
-@app.route('/camera')
-def camera():
+def translate_ip(ip):
+    if ip == '1':
+        return '10.0.0.19'
+    if ip == '2':
+        return '10.0.0.20'
+
+
+def get_camera(ip):
+    if get_my_ip() != ip:
+        r = requests.get('http://'+ip+':5000/camera')
+        print(r)
+        return r.text
+    else:
+        return camera_internal()
+
+
+def camera_internal():
     filename = '/var/www/ram/campi.jpg'
 
     global lastTime
@@ -116,6 +140,12 @@ def camera():
         print('returning old image')
 
     return send_file(filename, mimetype='image/jpeg')
+
+
+@app.route('/camera')
+def camera():
+    ip = translate_ip(request.args.get('ip'))
+    return get_camera(ip)
 
 
 @app.route('/device', methods=['POST'])
@@ -140,19 +170,6 @@ def device():
     elif idx == '4':
         cmd = 'T,'
         d = {'result': xbee(idx, cmd, True)}
-    return jsonify(**d)
-
-
-@app.route('/xbee', methods=['POST'])
-def xbee_send():
-    xpibee.send_transmit_request(request.json['addr'], request.json['data'])
-    d = {'result': 'ok'}
-    return jsonify(**d)
-
-
-@app.route('/xbee2', methods=['POST'])
-def xbee2_send():
-    d = {'result': xpibee.send_transmit_request(request.json['addr'], request.json['data'], True)[2]}
     return jsonify(**d)
 
 

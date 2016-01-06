@@ -5,7 +5,7 @@
 import subprocess
 
 apt_packages = ['git', 'python-pip', 'mongodb']
-pip_packages = ['flask', 'pymongo', 'xpibee', 'webpigpio']
+pip_packages = ['flask', 'pymongo', 'webpigpio']
 
 
 def run_process(cmd):
