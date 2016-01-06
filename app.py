@@ -30,7 +30,6 @@ debug = False
 
 cam = picamera.PiCamera()
 cam.resolution = (1024,768)
-cam.rotation = 90
 cam.start_preview()
 
 if len(sys.argv) > 1:
@@ -113,17 +112,17 @@ def notify():
 
 def translate_ip(ip):
     if ip == '1':
+        cam.rotation = 90
         return '10.0.0.19'
     if ip == '2':
+        cam.rotation = 0
         return '10.0.0.20'
 
 
 def get_camera(ip):
     print('ip is '+ip)
     if get_my_ip() != translate_ip(ip):
-        r = requests.get('http://'+translate_ip(ip)+':5000/camera?ip='+ip)
-        print(r)
-        return r.text
+        return requests.get('http://'+translate_ip(ip)+':5000/camera?ip='+ip).content
     else:
         print('returning internal')
         return camera_internal()
