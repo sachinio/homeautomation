@@ -115,7 +115,7 @@ def translate_ip(ip):
         cam.rotation = 90
         return '10.0.0.19'
     if ip == '2':
-        cam.rotation = 0
+        cam.rotation = 180
         return '10.0.0.20'
 
 
