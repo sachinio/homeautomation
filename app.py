@@ -148,7 +148,7 @@ def camera_internal():
 def camera():
     print(request)
     print(request.args)
-    ip = translate_ip(request.args['ip'])
+    ip = translate_ip(request.args.get('ip'))
     print('ip id is ' + ip)
     return get_camera(ip)
 
