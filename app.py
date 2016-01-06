@@ -146,6 +146,8 @@ def camera_internal():
 
 @app.route('/camera')
 def camera():
+    print(request)
+    print(request.args)
     ip = translate_ip(request.args.get('ip'))
     print('ip id is ' + ip)
     return get_camera(ip)
