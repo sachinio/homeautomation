@@ -120,8 +120,8 @@ def translate_ip(ip):
 
 def get_camera(ip):
     print('ip is '+ip)
-    if get_my_ip() != ip:
-        r = requests.get('http://'+ip+':5000/camera')
+    if get_my_ip() != translate_ip(ip):
+        r = requests.get('http://'+translate_ip(ip)+':5000/camera?ip='+ip)
         print(r)
         return r.text
     else:
@@ -146,10 +146,7 @@ def camera_internal():
 
 @app.route('/camera')
 def camera():
-    print(request)
-    print(request.args)
-    ip = translate_ip(request.args.get('ip'))
-    print('ip id is ' + ip)
+    ip = request.args.get('ip')
     return get_camera(ip)
 
 
