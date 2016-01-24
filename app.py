@@ -117,6 +117,9 @@ def translate_ip(ip):
     if ip == '2':
         cam.rotation = 180
         return '10.0.0.20'
+    if ip == '3':
+        cam.rotation = 180
+        return '10.0.0.34'
 
 
 def get_camera(ip):
