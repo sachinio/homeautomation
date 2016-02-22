@@ -1,8 +1,15 @@
 #include <Adafruit_NeoPixel.h>
 #include <avr/power.h>
 #include <XBee.h>
+#include <NewPing.h>
 
-#define PIN       11
+#define TRIGGER_PIN  9  // Arduino pin tied to trigger pin on the ultrasonic sensor.
+#define ECHO_PIN     10  // Arduino pin tied to echo pin on the ultrasonic sensor.
+#define MAX_DISTANCE 400 // Maximum distance we want to ping for (in centimeters). Maximum sensor distance is rated at 400-500cm.
+
+#define DOOR       11 // Normally 11
+
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance.
 
 const int MaxMessageLen = 100;
 char MSG[MaxMessageLen], HEAD[30], BODY[30];
@@ -15,8 +22,12 @@ XBeeResponse response = XBeeResponse();
 ZBRxResponse rx = ZBRxResponse();
 ModemStatusResponse msr = ModemStatusResponse();
 
+unsigned char payload[] = { 0,0,0,0};
+XBeeAddress64 addr64 = XBeeAddress64(0x0013a200, 0x40b96e35);
+ZBTxRequest zbTx = ZBTxRequest(addr64, payload, sizeof(payload));
+
 void setup() {
-  pinMode(PIN, OUTPUT);
+  pinMode(DOOR, OUTPUT);
   pinMode(13, OUTPUT);
   t = millis() + TOUT;
   HEAD[0] = 'F';
@@ -71,24 +82,42 @@ void loop() {
     break;
     case 'O': off();
     break;
-    case 'F': flash();
+    case 'F': flash(1);
+    break;
+    case 'D': reportDoorState(); flash(10);HEAD[0] = 'O';
     break;
   }
 }
 
-void flash(){
+void flash(int count){
+  for(int i=0;i<count;i++){
   delay(50);
   digitalWrite(13, HIGH);
   delay(50);
   digitalWrite(13, LOW);
+  }
 }
 
 void doit(){
-  digitalWrite(PIN, HIGH);
+  digitalWrite(DOOR, HIGH);
 }
 
 void off(){
-    digitalWrite(PIN, LOW);
+    digitalWrite(DOOR, LOW);
+}
+
+void reportDoorState(){
+  //delay(500);
+  int cm = sonar.ping_cm();
+  
+  String str = String(cm);
+  for(int i=0;i<str.length();i++){
+    payload[i]=str[i];
+  }
+  
+  payload[str.length()] = '\0';
+  
+  xbee.send(zbTx);
 }
 
 
