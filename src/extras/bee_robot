@@ -1,0 +1,144 @@
+#include <Adafruit_NeoPixel.h>
+#include <avr/power.h>
+#include <XBee.h>
+
+#define MOTOR1PWM 5 // right
+#define MOTOR2PWM 6 // left
+
+#define MOTOR1REV 10
+#define MOTOR1FWD 9
+#define MOTOR2REV 12
+#define MOTOR2FWD 11
+
+const int MaxMessageLen = 100;
+char MSG[MaxMessageLen], HEAD[30];
+int RIGHT = 0;
+int LEFT = 0;
+
+XBee xbee = XBee();
+XBeeResponse response = XBeeResponse();
+ZBRxResponse rx = ZBRxResponse();
+ModemStatusResponse msr = ModemStatusResponse();
+
+void setup() {
+  pinMode(MOTOR1PWM, OUTPUT);
+  pinMode(MOTOR2PWM, OUTPUT);
+  
+  pinMode(MOTOR1REV, OUTPUT);
+  pinMode(MOTOR1FWD, OUTPUT);
+  pinMode(MOTOR2REV, OUTPUT);
+  pinMode(MOTOR2FWD, OUTPUT); 
+  
+  Serial.begin(9600); 
+  xbee.begin(Serial);
+}
+
+void checkSerialAPI(){
+    xbee.readPacket();
+    
+    if (xbee.getResponse().isAvailable()) {
+      
+      if (xbee.getResponse().getApiId() == ZB_RX_RESPONSE) {
+        xbee.getResponse().getZBRxResponse(rx);
+            
+        if (rx.getOption() == ZB_PACKET_ACKNOWLEDGED) {
+        } else {}
+        
+        int len = rx.getDataLength();
+        char m[len+1];
+        for(int i=0;i<len;i++){
+          m[i]=rx.getData(i);
+        }
+        m[len]='\0';
+
+        processData(m, HEAD, LEFT, RIGHT);
+        
+      } else if (xbee.getResponse().getApiId() == MODEM_STATUS_RESPONSE) {
+        xbee.getResponse().getModemStatusResponse(msr);
+        if (msr.getStatus() == ASSOCIATED) {} 
+        else if (msr.getStatus() == DISASSOCIATED) {} 
+        else {}
+      } else {}
+    } else if (xbee.getResponse().isError()) {}
+}
+
+void loop() {
+  checkSerialAPI();
+      
+  switch(toupper(HEAD[0])){
+    case 'F': forward(255*((double)LEFT/100),255*((double)RIGHT/100)); break;
+    case 'R': reverse(255*((double)LEFT/100)); break;
+    case 'S': spin(255*((double)LEFT/100));
+  }
+}
+
+void spin(int speedS){
+  analogWrite(MOTOR1PWM,speedS);
+  analogWrite(MOTOR2PWM, speedS);
+  digitalWrite(MOTOR1FWD, HIGH);
+  digitalWrite(MOTOR2FWD, LOW);
+  digitalWrite(MOTOR1REV, LOW);
+  digitalWrite(MOTOR2REV, HIGH);
+}
+
+void halt(){
+  analogWrite(MOTOR1PWM,0);
+  analogWrite(MOTOR2PWM, 0);
+  digitalWrite(MOTOR1FWD, LOW);
+  digitalWrite(MOTOR2FWD, LOW);
+  digitalWrite(MOTOR1REV, LOW);
+  digitalWrite(MOTOR2REV, LOW);
+}
+
+void forward(int speedL, int speedR){
+  analogWrite(MOTOR1PWM,speedR);
+  analogWrite(MOTOR2PWM, speedL);
+  digitalWrite(MOTOR1FWD, HIGH);
+  digitalWrite(MOTOR2FWD, HIGH);
+  digitalWrite(MOTOR1REV, LOW);
+  digitalWrite(MOTOR2REV, LOW);
+}
+
+void reverse(int speed){
+  analogWrite(MOTOR1PWM,speed);
+  analogWrite(MOTOR2PWM, speed);
+  digitalWrite(MOTOR1FWD, LOW);
+  digitalWrite(MOTOR2FWD, LOW);
+  digitalWrite(MOTOR1REV, HIGH);
+  digitalWrite(MOTOR2REV, HIGH);
+}
+
+void processData(char* chars, char* head, int&left ,int &right) {
+  char l[40]={};
+  char r[40]={};
+  
+  int len = MaxMessageLen;
+  int i=0;
+  int j=0;
+
+  while(chars[i] != ',' && i<len){ 
+    head[j] = chars[i];
+    i++; j++;
+  }
+  
+  head[j]='\0';
+  i++;j=0;
+  
+  while(chars[i] != ',' && i<len){
+    l[j] = chars[i];
+    i++; j++;
+  }
+  
+  l[j] = '\0';
+  left = atoi(l);
+  i++; j=0;
+  
+  while(chars[i] != ',' && i<len){
+    r[j] = chars[i];
+    i++; j++;
+  }
+  
+  r[j] = '\0';
+  right = atoi(r);
+  i++; j=0;
+}
